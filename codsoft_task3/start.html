@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            width: 300px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .grid-item {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        .display {
+            grid-column: span 4; /* Span all columns */
+            padding: 10px;
+            font-size: 18px;
+            text-align: right;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <div class="display" id="display">0</div>
+        <div class="grid-item" onclick="appendCharacter('7')">7</div>
+        <div class="grid-item" onclick="appendCharacter('8')">8</div>
+        <div class="grid-item" onclick="appendCharacter('9')">9</div>
+        <div class="grid-item" onclick="appendOperator('+')">+</div>
+        <div class="grid-item" onclick="appendCharacter('4')">4</div>
+        <div class="grid-item" onclick="appendCharacter('5')">5</div>
+        <div class="grid-item" onclick="appendCharacter('6')">6</div>
+        <div class="grid-item" onclick="appendOperator('-')">-</div>
+        <div class="grid-item" onclick="appendCharacter('1')">1</div>
+        <div class="grid-item" onclick="appendCharacter('2')">2</div>
+        <div class="grid-item" onclick="appendCharacter('3')">3</div>
+        <div class="grid-item" onclick="appendOperator('*')">*</div>
+        <div class="grid-item" onclick="clearDisplay()">C</div>
+        <div class="grid-item" onclick="calculateResult()">=</div>
+        <div class="grid-item" onclick="appendOperator('/')">/</div>
+    </div>
+
+    <script>
+        let displayValue = '0';
+
+        function updateDisplay() {
+            document.getElementById('display').textContent = displayValue;
+        }
+
+        function appendCharacter(character) {
+            if (displayValue === '0' && character !== '.') {
+                displayValue = ''; // Remove leading zero if not inputting a decimal
+            }
+            displayValue += character;
+            updateDisplay();
+        }
+
+        function appendOperator(operator) {
+            if (displayValue.endsWith('+') || displayValue.endsWith('-') || displayValue.endsWith('*') || displayValue.endsWith('/')) {
+                // Replace the last operator with the new one
+                displayValue = displayValue.slice(0, -1) + operator;
+            } else {
+                displayValue += operator;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            displayValue = '0';
+            updateDisplay();
+        }
+
+        function calculateResult() {
+            try {
+                const result = eval(displayValue); // Use eval to evaluate the expression
+                displayValue = String(result);
+                updateDisplay();
+            } catch (error) {
+                displayValue = 'Error';
+                updateDisplay();
+            }
+        }
+    </script>
+</body>
+</html>
